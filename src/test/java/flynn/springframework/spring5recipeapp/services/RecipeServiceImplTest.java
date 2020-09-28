@@ -1,5 +1,7 @@
 package flynn.springframework.spring5recipeapp.services;
 
+import flynn.springframework.spring5recipeapp.converters.RecipeCommandToRecipe;
+import flynn.springframework.spring5recipeapp.converters.RecipeToRecipeCommand;
 import flynn.springframework.spring5recipeapp.domain.Recipe;
 import flynn.springframework.spring5recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,10 +24,16 @@ class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
