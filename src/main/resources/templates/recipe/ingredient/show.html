@@ -26,6 +26,9 @@
                 <div class="panel-heading">
                     <h1 class="panel-title">Ingredient</h1>
                 </div>
+                <div class="col-md-1">
+                    <a class="btn-danger" href="#" th:href="@{'/recipe/' + ${ingredient.getRecipeId()} + '/ingredients'}">Return</a>
+                </div>
                 <div class="panel-body">
 
                     <div class="table-responsive">
