@@ -3,6 +3,7 @@ package flynn.springframework.spring5recipeapp.services;
 import flynn.springframework.spring5recipeapp.converters.RecipeCommandToRecipe;
 import flynn.springframework.spring5recipeapp.converters.RecipeToRecipeCommand;
 import flynn.springframework.spring5recipeapp.domain.Recipe;
+import flynn.springframework.spring5recipeapp.exceptions.NotFoundException;
 import flynn.springframework.spring5recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class RecipeServiceImplTest {
@@ -51,6 +52,23 @@ class RecipeServiceImplTest {
         verify(recipeRepository, times(1)).findAll();
         verify(recipeRepository, never()).findById(anyLong());
 
+    }
+
+    @Test
+    void getRecipeByIdTestNotFound() throws Exception {
+        // given
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        // when
+        NotFoundException notFoundException = assertThrows(
+                NotFoundException.class, () -> recipeService.findById(1L),
+                "Expected exception to throw an error. But it didn't"
+        );
+
+        // then
+        assertTrue(notFoundException.getMessage().contains("Recipe Not Found"));
     }
 
     @Test
